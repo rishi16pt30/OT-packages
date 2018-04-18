@@ -1,0 +1,132 @@
+t=read.csv(file.choose())
+a=rows<-nrow(t)
+cols<-ncol(t)-1
+elts=c()
+A=matrix(data=c(1,5,7),ncol=3)
+print(A)
+B=matrix(data=c(3,3,3,2,2),ncol=5)
+print(B)
+for(i in 2:(cols+1))
+{
+  tc=c(t[,i])
+  print(tc)
+  elts=c(elts,tc)
+}
+t=matrix(elts,nrow=rows,ncol=cols,byrow=FALSE)
+k=t
+print(t)
+v=c() 
+u=c() 
+ for(i in 1:(length(k)-1)){
+    print(min(k[,i]))
+    v[i]=min(k[,i])
+    k[,i]=k[,i]-min(k[,i])
+  }
+  for(i in 1:(length(k)-1)){
+    u[i]=min(k[i,])
+    k[i,]=k[i,]-min(k[i,])
+  }
+
+km=k
+s=sum(A%*%u)+sum(B%*%v)
+print(s)
+while(1){
+d=k
+for (i in 1:nrow(k)){
+  for (j in 1:ncol(k)){
+    if(k[i,j]==0){
+      d[i,j]=1
+    }
+    else{
+      d[i,j]=0
+    }
+  }
+}
+g=c()
+g=A%*%d
+D=g-B
+J=c()
+w=1
+for (i in 1:length(D)){
+  #print(i)
+  if(D[i]<0){
+    J[w]=i
+    w=w+1
+  }
+}
+print(J)
+if(is.null(J)==FALSE){
+g1=d%*%t(B)
+print(g1)
+D=t(g1)-A
+J1=c()
+w=1
+for (i in 1:length(D)){
+  print(i)
+  if(D[i]>0){
+    J1[w]=i
+    w=w+1
+  }
+}
+dum=k
+for (i in 1:nrow(k)){
+  for (j in 1:ncol(k)){
+    if(dum[i,j]==0){
+      dum[i,j]=Inf
+      }  
+  }
+}
+v1=c()
+for (i in 1:ncol(k)){
+  v1[i]=0
+}
+for(i in 1:length(J)){
+  e=J[i]
+  v1[e]=min(dum[,e])
+}
+for (i in 1:nrow(k))
+{
+  if(k[i,J]==0)
+  {
+   I=i 
+  }
+}
+x=1
+v2=c()
+for (i in 1:length(v1)){
+  print(v1[i])
+  if(v1[i]>0)
+  {
+     v2[x]=v1[i]
+     x=x+1
+  }
+}
+u1=c()
+for (i in 1:nrow(k)){
+  u1[i]=0
+}
+for(i in 1:length(J1)){
+  e=J1[i]
+  print(J1)
+  u1[e]=-(v2[i])
+}
+k=km
+for (i in 1:nrow(k)){
+  print(k[i,]) 
+  k[i,]=k[i,]-u1[i]
+  #print(k[i,])
+}
+for (i in 1:ncol(k)){     
+  k[,i]=k[,i]-v1[i]
+}
+print(k)
+v2=t(t(v1))
+s=s+sum(A%*%(u1))+sum(B%*%(v2))
+print(s)
+}
+else
+{
+  break
+}
+}
+
